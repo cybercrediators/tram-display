@@ -1,1 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 16px;
+}
+
+:root {
+  --bg-color: #bd4c54;
+  --text-color: #fffb46;
+  
+  --board-bg: #111; /* flap background */
+  --flap-bg: #222;
+  --flap-text: #eee;
+  --flap-border: #000;
+  
+  --card-border: #263238;
+  --card-bg: #263238;
+  --card-header-text: #fffb46;
+}
+
+body.e-ink-mode {
+  --bg-color: #fff;
+  --text-color: #000;
+  
+  --board-bg: #ccc;
+  --flap-bg: #000;
+  --flap-text: #fff;
+  --flap-border: #999;
+  
+  --card-border: #000;
+  --card-bg: #fff;
+  --card-header-text: #fff;
+}
+
+button, input {
+	font-family: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	* {
+		transition: none !important;
+		animation: none !important;
+	}
+}

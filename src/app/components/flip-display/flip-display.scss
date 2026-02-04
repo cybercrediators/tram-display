@@ -1,0 +1,112 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.departure-board {
+  padding: 0.36em;
+  display: flex;
+  justify-content: space-between; /* spread letters */
+  
+  background: var(--board-bg, rgb(30, 30, 30));
+  color: var(--flap-text, #eee);
+  
+  font-size: 2.2vw;
+  @media (min-width: 1200px) {
+    font-size: 26px;
+  }
+ 
+  /* some monospace fonts with fallbacks */
+  font-family: 'Cascadia Code', 'Roboto Mono', 'Droid Sans Mono', 'Courier New', monospace;
+  line-height: 1.3em;
+}
+
+.letter {
+  display: inline-block;
+  width: 1em;
+  height: 1.3em;
+  text-align: center;
+  position: relative;
+  
+  box-shadow: 
+    inset 0 -.07em 0 rgba(50, 50, 50, .7), 
+    inset 0 -.14em 0 rgba(0, 0, 0, .7), 
+    inset .14em 0 .28em rgba(0, 0, 0, .9), 
+    inset -.14em 0 .28em rgba(0, 0, 0, .9),	
+    0 .07em 0 rgba(255, 255, 255, .2); 
+    
+  margin: 0 0.05em;
+}
+
+.letter:before {
+  border-top: .07em solid rgba(0, 0, 0, .4);
+  border-bottom: .07em solid rgba(255, 255, 255, .08);
+  height: 0;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 50%;
+  margin-top: -0.07em;
+  content: " ";
+  display: block;
+  z-index: 20;
+}
+
+.fold {
+  display: block;
+  position: absolute;
+  height: 0;
+  top: .65em;
+  left: 0;
+  width: 100%;
+}
+
+.flap {
+  display: block;
+  position: absolute;
+  top: 0em;	
+  width: 100%;
+  height: .65em;
+  margin: 0;
+  overflow: hidden;
+  left: 0;
+  
+  background: var(--flap-bg, #222);
+  color: var(--flap-text, #eee);
+}
+
+.text {
+  width: 100%;
+  display: block;
+  text-align: center;
+  transform: translateZ(0); /* hw acceleration */
+  will-change: transform;   /* inform browser of upcoming changes */
+  backface-visibility: hidden;
+}
+
+.bottom {
+  top: .65em;
+}
+
+.bottom .text {
+  position: relative;
+  top: -.65em;
+}
+
+.flap.falling {
+  display: none;
+  bottom: 0;	
+  top: auto;
+}
+
+.flap.falling .text {
+  backface-visibility: hidden;
+  border-top: .03em solid #444;
+  border-bottom: .03em solid #444;	
+  background: #000;
+  display: block;
+  position: relative;
+  
+  transform: scaleY(1); 
+  transition: transform linear;
+}

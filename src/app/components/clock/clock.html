@@ -1,0 +1,20 @@
+<div class="clock">
+  <div class="clock-face">
+    <div class="marks-container">
+        @for (m of marks; track m) {
+            <div>
+                class="mark" 
+                [class.hour-mark]="m.isHour"
+                [class.quarter-mark]="m.isQuarter"
+                [style.transform]="'rotate(' + m.angle + 'deg)'">
+            </div>
+        }
+    </div>
+    
+    <div class="hand hour-hand" [style.transform]="'rotate(' + (hours * 30) + 'deg)'"></div>
+    <div class="hand minute-hand" [style.transform]="'rotate(' + (minutes * 6) + 'deg)'"></div>
+    <div class="hand second-hand" [style.transform]="'rotate(' + (seconds * 6) + 'deg)'">
+       <div class="second-dot"></div>
+    </div>
+  </div>
+</div>

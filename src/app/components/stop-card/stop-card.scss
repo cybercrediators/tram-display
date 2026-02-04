@@ -1,0 +1,288 @@
+.card {
+  border: 4px solid var(--card-border);
+  background: var(--card-bg);
+  margin-bottom: 1rem;
+  box-shadow: 4px 4px 0 var(--card-border);
+}
+
+.header {
+  background: var(--card-border);
+  color: #fff;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  .title-area {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+  }
+  
+  h3 {
+    margin: 0;
+    text-transform: uppercase;
+  }
+  
+  button {
+    background: transparent;
+    border: 1px solid #fff; 
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    line-height: 28px;
+    text-align: center;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    &:hover {
+      background: rgba(255,255,255,0.2);
+    }
+  }
+  
+  .icon-btn.pinned {
+    color: #ffd700;
+    border-color: #ffd700;
+  }
+  
+  .icon-btn.active {
+     background: rgba(255,255,255,0.4);
+  }
+}
+
+.settings-panel {
+  padding: 10px;
+  background: var(--card-bg);
+  border-bottom: 2px solid var(--card-border);
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  color: #fff;
+  
+  .walking-input {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    
+    input[type=text] {
+      width: 50px; 
+      padding: 12px;
+      border: 3px solid #000;
+      border-radius: 0;
+      font-size: 1rem;
+      color: #000;
+      background: #fff;
+      box-shadow: 2px 2px 0px #000;
+      
+      &:focus {
+         outline: none;
+         background: #ffffdd;
+      }
+    }
+  }
+}
+
+// toogle switch style
+.switch-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  position: relative;
+  
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
+  
+  .slider {
+    width: 34px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 20px;
+    position: relative;
+    transition: .4s;
+    
+    &:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+  }
+  
+  input:checked + .slider {
+    background-color: var(--card-border, #2196F3);
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(14px);
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+}
+
+.departures {
+  padding: 10px;
+  background: #333;
+}
+
+.row {
+  margin-bottom: 4px;
+  background: #222;
+  padding: 4px;
+  border-radius: 4px;
+  
+  &.urgent {
+     --flap-text: #ffcc00;
+     animation: blinkUrgent 1.5s infinite alternate ease-in-out;
+  }
+  
+  /* Delayed styling: Color last 7 chars RED if explicitly delayed */
+  &.delayed:not(.urgent) {
+     app-flip-display {
+       ::ng-deep .letter:nth-last-child(-n+7) .text {
+          color: #ff4444 !important;
+       }
+     }
+  }
+
+  display: flex;
+  justify-content: center;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .text-board.static-vfd {
+       font-family: 'Courier New', Courier, monospace;
+       /* Mimic the flip board look but without physics */
+       background: #222; 
+       color: #fff; /* White for standard static mode */
+  }
+  
+  .delayed-text {
+      color: #ff4444; /* Red for delayed time */
+  }
+  
+  /* Use & to reference parent .row.urgent */
+  &.urgent .text-board.static-vfd {
+      color: #ffcc00; /* VFD Yellow for urgent */
+  }
+
+  .text-board {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 3.7vw; /* Responsive sizing for mobile (approx match VFD width) */ 
+    
+    @media (min-width: 600px) {
+      font-size: 1.4rem;
+    }
+    
+    color: var(--flap-text, #fff);
+    white-space: pre;
+    padding: 0 5px;
+  }
+}
+
+@keyframes blinkUrgent {
+  from { opacity: 1; }
+  to { opacity: 0.5; }
+}
+
+/* E-Ink mode overrides */
+:host-context(body.e-ink-mode) {
+  .card {
+     border: 4px solid #000;
+     background: #fff;
+     box-shadow: none; 
+  }
+
+  .header {
+    background: #fff;
+    color: #000;
+    border-bottom: 3px solid #000;
+
+    button {
+       color: #000;
+       border: 1px solid #000;
+       
+       &:hover {
+         background: rgba(0,0,0,0.1);
+       }
+    }
+    
+    .icon-btn.pinned {
+        background: #000;
+        color: #fff;
+        border-color: #000;
+    }
+    
+    .icon-btn.active {
+       background: #ccc;
+    }
+  }
+
+  .settings-panel {
+     background: #fff;
+     color: #000;
+     border-bottom: 2px solid #000;
+  }
+  
+  .departures {
+     background: #fff;
+  }
+
+  .row {
+     background: #fff;
+     border-bottom: 1px solid #000;
+     border-radius: 0;
+     margin-bottom: 0;
+     padding: 8px 4px;
+     
+     &.urgent {
+       animation: none !important;
+       background: #000;
+       color: #fff;
+     }
+
+     &:last-child {
+       border-bottom: none;
+     }
+  }
+  
+  /* reset static-vfd style in e-ink mode if class leaks */
+  .text-board.static-vfd {
+       background: transparent;
+       color: inherit;
+  }
+
+  .text-board {
+       color: #000; 
+  }
+  
+  .row.urgent .text-board {
+      color: #fff;
+  }
+}
+
+.loading, .no-data {
+  padding: 20px;
+  text-align: center;
+  font-family: monospace;
+}

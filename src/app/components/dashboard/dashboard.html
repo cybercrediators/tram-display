@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="header-row">
+    <h1>
+      <img src="augsburg_zirbelnuss.svg" alt="Zirbelnuss" class="logo">
+      Departures
+    </h1>
+    
+    <div class="clock-container">
+       <app-clock [style.visibility]="displayMode === 'e-ink' ? 'hidden' : 'visible'"></app-clock>
+    </div>
+  </div>
+  
+  <section class="search-section">
+    <app-stop-search (stopAdded)="onStopAdded($event)"></app-stop-search>
+  </section>
+
+  <section class="cards-section">
+    <div class="grid">
+        @for (stop of savedStops; track stop) {
+            <app-stop-card 
+              [stop]="stop" 
+              [displayMode]="displayMode"
+              (remove)="onRemoveStop($event)"
+              (update)="onUpdateStop($event)">
+            </app-stop-card>
+        }
+    </div>
+    @if (savedStops.length === 0) {
+        <div class="empty-state">
+            No stops added. Search above to add one.
+        </div>
+    }
+  </section>
+  
+  <footer class="controls-footer">
+    <div class="footer-left">
+        <a href="https://lutz.codes" target="_blank" rel="noopener">lutz.codes</a>
+    </div>
+
+    <div class="footer-center">
+        <div class="backend-controls">
+           <select (change)="onBackendChange($event)" class="footer-select" title="Select Transport Provider">
+            @for (b of availableBackends; track b) {
+                <option [value]="b.name" [selected]="b.name === currentBackend">{{ b.label }}</option>
+           }
+           </select>
+           @if (currentBackend.startsWith('efa') && currentBackend !== 'efa:efa-avv') {
+                <button (click)="openEfaSettings()" class="settings-btn" title="Configure EFA Backend">
+                  ⚙
+                </button>
+            }
+           <button (click)="addEfaConfig()" class="settings-btn" title="Add New EFA Profile">
+             +
+           </button>
+        </div>
+        
+        <select (change)="onDisplayModeChange($event)" class="footer-select" title="Select Display Mode">
+            @for (m of availableModes; track m) {
+                <option [value]="m.id" [selected]="m.id === displayMode">{{m.label}}</option>
+            }
+        </select>
+    </div>
+
+    <div class="footer-right">
+       <button type="button" (click)="copyShareUrl()" class="share-btn" title="Copy configuration URL to clipboard">
+         Share Board
+       </button>
+    </div>
+  </footer>
+</div>
+
+@if (editingEfaConfig) {
+    <app-efa-settings [initialConfig]="editingEfaConfig" (closeSettings)="closeEfaSettings()"></app-efa-settings>
+}

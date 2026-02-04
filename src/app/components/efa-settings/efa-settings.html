@@ -1,0 +1,114 @@
+<div class="modal-backdrop" (click)="close()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <header class="modal-header">
+      <h2>EFA Backend Settings</h2>
+      <button class="close-btn" (click)="close()">×</button>
+    </header>
+    
+    <div class="modal-body">
+      
+      <!-- Preset Name Config -->
+      <div class="form-group">
+        <label for="configName">Configuration Name</label>
+        <div class="input-row" style="margin-bottom: 0;">
+            <input 
+              id="configName" 
+              type="text" 
+              [(ngModel)]="config.name" 
+              class="form-control"
+              [disabled]="config.id === 'efa-avv'"
+            >
+            @if (config.id === 'efa-avv') {
+              <div class="default-badge">Default</div>
+            }
+        </div>
+        @if (config.id !== 'efa-avv') {
+          <small>This will update the current custom preset.</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="baseUrl">EFA API Base URL</label>
+        <input  
+          id="baseUrl" 
+          type="url" 
+          [(ngModel)]="config.baseUrl" 
+          placeholder="https://fahrtauskunft.avv-augsburg.de/efa"
+          class="form-control"
+        >
+        <small>The URL must point to the folder containing XML_STOPFINDER_REQUEST (usually ends in /efa or /v1)</small>
+      </div>
+
+      <div class="form-group box-check">
+          <label>
+              <input type="checkbox" [(ngModel)]="config.excludeTrains">
+              Filter out Trains (ICE, IC, RE, RB)
+          </label>
+          <small>If checked, only local transit (Bus, Tram, Subway, S-Bahn) will be shown.</small>
+      </div>
+
+      <div class="form-group">
+         <label>Region Filters (GIDs)</label>
+         <div class="chips-container">
+          @for (code of config.regionCodes; track code) {
+            <span class="chip">
+               {{code}}
+               <button (click)="removeRegion(code)" class="chip-remove" title="Remove">×</button>
+            </span>
+          }
+            @if (config.regionCodes.length === 0) {
+              <span class="chip empty">No filters (All regions)</span>
+            }
+         </div>
+      </div>
+
+      <div class="form-group search-group">
+        <label>Add Region Filter</label>
+        <div class="input-row">
+            <input 
+              type="text" 
+              [(ngModel)]="searchQuery" 
+              (keyup.enter)="search()"
+              placeholder="Search city/region (e.g. München)"
+              class="form-control"
+            >
+            <button (click)="search()" class="btn btn-secondary">Search</button>
+        </div>
+        
+        <!-- Search Results -->
+        @if (searchResults.length > 0) {
+          <div class="search-results">
+             <p class="results-header">Found Regions:</p>
+             <div *ngFor="let res of searchResults" class="search-result-item">
+                <div class="result-info">
+                   <div class="result-name">{{res.name || 'Unknown Region'}}</div>
+                   <div class="result-meta"><span class="gid">{{res.gid}}</span> ({{res.count}} stops found)</div>
+                </div>
+                <div class="result-actions">
+                    <button (click)="addRegion(res.gid)" class="btn btn-sm btn-primary">Add Region</button>
+                </div>
+             </div>
+          </div>
+        }
+        @if (manualCode !== null) {
+          <div class="manual-add">
+               <input type="text" [(ngModel)]="manualCode" placeholder="Paste GID (e.g. de:097)" class="form-control small">
+               <button (click)="addManual()" class="btn btn-sm">Add</button>
+          </div>
+        }
+        <div class="toggle-manual">
+            <small><a href="#" (click)="$event.preventDefault(); manualCode = ''">Or add code manually</a></small>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="modal-footer">
+      @if (config.id !== 'efa-avv') {
+        <button (click)="deleteConfig()" class="btn btn-danger" style="margin-right: auto;">Delete</button>
+      }
+      <button (click)="close()" class="btn btn-text">Cancel</button>
+      <button (click)="save()" class="btn btn-primary" [disabled]="config.id === 'efa-avv'">Save Changes</button>
+    </footer>
+  </div>
+</div>

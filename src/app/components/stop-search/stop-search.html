@@ -1,0 +1,18 @@
+<div class="search-container">
+  <input 
+    type="text" 
+    [(ngModel)]="searchTerm" 
+    (ngModelChange)="onSearch($event)" 
+    placeholder="Search stop..."
+    class="search-input"
+  />
+  @if (results.length > 0) {
+    <ul class="results">
+        @for (stop of results; track stop) {
+            <li (click)="add(stop)">
+                {{stop.name}}
+            </li>
+        }
+    </ul>
+  }
+</div>

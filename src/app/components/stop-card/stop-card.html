@@ -1,0 +1,60 @@
+<div class="card">
+  <div class="header">
+    <div class="title-area">
+        <button class="icon-btn" (click)="togglePin()" [class.pinned]="stop.pinned" title="Pin to top">
+          ★
+        </button>
+        <h3>{{stop.name}}</h3>
+        <button class="icon-btn" (click)="toggleSettings()" title="Settings / Walking Time" [class.active]="showSettings">
+          🚶
+        </button>
+    </div>
+    <button class="remove-btn" (click)="onRemove()" aria-label="Remove Stop">×</button>
+  </div>
+  
+  @if (showSettings) {
+    <div class="settings-panel">
+        <label class="walking-input">
+           <span>Walking Time (min):</span>
+           <input type="text" inputmode="numeric" [(ngModel)]="stop.walkingTime" (blur)="saveWalkingTime()" (keyup.enter)="saveWalkingTime()" placeholder="0">
+        </label>
+
+        <label class="switch-toggle" title="Hide stops you can't reach">
+           <input type="checkbox" [(ngModel)]="filterReachable" (ngModelChange)="toggleFilter()">
+           <span class="slider round"></span>
+           <span class="label-text">Hide unreachable</span>
+        </label>
+    </div>
+  }
+  
+  @if (!loading) {
+    <div class="departures">
+      <div class="row" *ngFor="let dep of departures; trackBy: trackByIndex" 
+           [class.urgent]="isUrgent(dep)"
+           [class.delayed]="dep.delayed">
+         <app-flip-display 
+            *ngIf="displayMode === 'vfd'; else textBoard" 
+            [value]="getRowString(dep)">
+         </app-flip-display>
+         <ng-template #textBoard>
+           <div class="text-board" *ngIf="displayMode === 'static'" [class.static-vfd]="true">
+              <span>{{ getParts(dep).line }} </span>
+              <span>{{ getParts(dep).dest }} </span>
+              <span [class.delayed-text]="dep.delayed && !isUrgent(dep)">{{ getParts(dep).time }}</span>
+           </div>
+           <div class="text-board" *ngIf="displayMode !== 'static'">{{ getRowString(dep) }}</div>
+         </ng-template>
+      </div>
+
+      @if (departures.length === 0) {
+        <div class="no-data">
+            No departures.
+        </div>
+      }
+    </div>
+  } @else {
+    <ng-template #loadState>
+      <div class="loading">Loading...</div>
+    </ng-template>
+  }
+</div>

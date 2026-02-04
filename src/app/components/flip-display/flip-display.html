@@ -1,0 +1,14 @@
+<div class="departure-board" #board>
+  <!-- Letters will be generated here by Angular but managed by the Controller -->
+    @for (i of charIndices; track i) {
+        <span class="letter">
+          <span class="flap bottom"><span class="text"></span></span>
+          <span class="flap top"><span class="text"></span></span>
+          <span class="fold">
+            <span class="flap falling">
+              <span class="text"></span>
+            </span>
+          </span>
+        </span>
+    }
+</div>

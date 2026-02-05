@@ -2,7 +2,7 @@
   <div class="clock-face">
     <div class="marks-container">
         @for (m of marks; track m) {
-            <div>
+            <div
                 class="mark" 
                 [class.hour-mark]="m.isHour"
                 [class.quarter-mark]="m.isQuarter"

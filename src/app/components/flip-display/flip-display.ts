@@ -117,12 +117,11 @@ class LetterController {
 export class FlipDisplayComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() value: string = '';
   
-  // Create an array of correct size to generate DOM elements
-  // Row length fixed to 34 approx based on stop card layout
   charIndices = new Array(34).fill(0); 
 
   private controllers: LetterController[] = [];
   private isInitialized = false;
+  private pendingUpdates: any[] = [];
   
   @ViewChildren('board') boardRef!: QueryList<ElementRef>;
 
@@ -151,8 +150,14 @@ export class FlipDisplayComponent implements OnChanges, AfterViewInit, OnDestroy
   }
 
   private updateBoard(val: string, instant = false) {
+    // clear any pending updates from previous changes
+    this.pendingUpdates.forEach(t => clearTimeout(t));
+    this.pendingUpdates = [];
+
     // translate ß -> ss manually as it consumes 2 slots before "rendering"
-    const padded = val.replace(/ß/g, 'ss').padEnd(this.charIndices.length, ' ');
+    let safePad = val.replace(/ß/g, 'ss')
+    const padded = safePad.padEnd(this.charIndices.length, ' ');
+    
     
     this.controllers.forEach((ctrl, i) => {
       const char = padded[i] || ' ';
@@ -163,14 +168,16 @@ export class FlipDisplayComponent implements OnChanges, AfterViewInit, OnDestroy
         // 20ms per index + random jitter
         const delay = 20 * i + Math.random() * 400;
         
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
           ctrl.setValue(char);
         }, delay);
+        this.pendingUpdates.push(timeoutId);
       }
     });
   }
 
   ngOnDestroy() {
+    this.pendingUpdates.forEach(t => clearTimeout(t));
     this.controllers.forEach(c => c.destroy());
   }
 }

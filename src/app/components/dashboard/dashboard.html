@@ -16,7 +16,7 @@
 
   <section class="cards-section">
     <div class="grid">
-        @for (stop of savedStops; track stop) {
+        @for (stop of savedStops; track stop.id) {
             <app-stop-card 
               [stop]="stop" 
               [displayMode]="displayMode"
@@ -34,13 +34,13 @@
   
   <footer class="controls-footer">
     <div class="footer-left">
-        <a href="https://lutz.codes" target="_blank" rel="noopener">lutz.codes</a>
+        <a href="https://github.com/cybercrediators/tram-display" target="_blank" rel="noopener">GitHub</a>
     </div>
 
     <div class="footer-center">
         <div class="backend-controls">
            <select (change)="onBackendChange($event)" class="footer-select" title="Select Transport Provider">
-            @for (b of availableBackends; track b) {
+            @for (b of availableBackends; track b.name) {
                 <option [value]="b.name" [selected]="b.name === currentBackend">{{ b.label }}</option>
            }
            </select>
@@ -55,7 +55,7 @@
         </div>
         
         <select (change)="onDisplayModeChange($event)" class="footer-select" title="Select Display Mode">
-            @for (m of availableModes; track m) {
+            @for (m of availableModes; track m.id) {
                 <option [value]="m.id" [selected]="m.id === displayMode">{{m.label}}</option>
             }
         </select>

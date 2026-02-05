@@ -94,7 +94,9 @@ export class TramService {
   }
 
   getDepartures(stopId: string, minOffset = 0): Observable<Departure[]> {
-    return this.activeBackend.getDepartures(stopId, minOffset);
+    const asdf = this.activeBackend.getDepartures(stopId, minOffset);
+    // console.log(asdf);
+    return asdf;
   }
 
   private getStorageKey(): string {

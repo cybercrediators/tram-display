@@ -1,8 +1,12 @@
+import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Departure, Stop, TransportBackend } from "../../transport-backend";
 import { BehaviorSubject, Observable, map, min, of } from "rxjs";
 import { AVV_CONFIG, EfaConfig } from "./efa-config";
 
+@Injectable({
+  providedIn: 'root'
+})
 export class EfaBackend  implements TransportBackend {
     name = 'efa';
     label = 'EFA';
@@ -213,8 +217,12 @@ export class EfaBackend  implements TransportBackend {
 
         if (config.excludeTrains) {
             params.excludeMeans = 'checkbox';
-            params.exclMOT_0 = '1'; // exclude trains
+            params.exclMOT_0 = true; // exclude trains
+            params.excludedMeans = 0;
         }
+
+        // console.log(params)
+
 
         if (minOffset > 0) {
             const future = new Date(Date.now() + minOffset * 60000);

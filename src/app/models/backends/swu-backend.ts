@@ -1,8 +1,12 @@
+import { Injectable } from '@angular/core';
 import { TransportBackend, Stop, Departure } from "../transport-backend";
 import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of, map, delay } from "rxjs";
 
+@Injectable({
+  providedIn: 'root'
+})
 export class SwuBackend  implements TransportBackend {
     name = 'swu';
     label = 'Ulm (SWU)';
@@ -62,11 +66,13 @@ export class SwuBackend  implements TransportBackend {
 
         return this.http.get<any>(this.apiUrl + '/stop/passage/Departures', { params }).pipe(
             map(response => {
-                if (!response.StopPassage || !response.StopPassage.Departure) return [];
+                if (!response.StopPassage || !response.StopPassage.DepartureData) return [];
 
                 // SWU API does not support future departures based on time offset
                 const now = Date.now();
                 const minTimeArr = now + (minOffset * 60000);
+
+                // console.log(response);
                 
                 return response.StopPassage.DepartureData.map((d: any) => {
                     const scheduledTime = new Date(d.DepartureTimeScheduled).getTime();

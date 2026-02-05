@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Tram } from './tram';
+import { TramService } from './tram';
 
 describe('Tram', () => {
-  let service: Tram;
+  let service: TramService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(Tram);
+    service = TestBed.inject(TramService);
   });
 
   it('should be created', () => {

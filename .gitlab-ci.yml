@@ -1,0 +1,25 @@
+image: node:lts
+
+stages:
+  - build
+  - test
+
+cache:
+  paths:
+    - node_modules/
+
+before_script:
+  - npm ci
+
+build:
+  stage: build
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+
+test:
+  stage: test
+  script:
+    - npm run test -- --watch=false

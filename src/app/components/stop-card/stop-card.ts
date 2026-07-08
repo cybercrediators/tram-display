@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TramService } from '../../services/tram';
@@ -11,6 +11,7 @@ import { Subscription, timer, switchMap, retry } from 'rxjs';
   standalone: true,
   imports: [CommonModule, FormsModule, FlipDisplayComponent],
   templateUrl: './stop-card.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './stop-card.scss'
 })
 export class StopCardComponent implements OnInit, OnDestroy {

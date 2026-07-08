@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EfaBackend } from '../../models/backends/efa/efa-backend';
@@ -10,6 +10,7 @@ import { TramService } from '../../services/tram';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './efa-settings.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./efa-settings.scss']
 })
 export class EfaSettingsComponent implements OnInit {

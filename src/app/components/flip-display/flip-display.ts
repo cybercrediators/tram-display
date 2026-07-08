@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChildren, QueryList, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChildren, QueryList, AfterViewInit, NgZone, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // explicitly define characters
@@ -112,6 +112,7 @@ class LetterController {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './flip-display.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './flip-display.scss'
 })
 export class FlipDisplayComponent implements OnChanges, AfterViewInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TramService } from '../../services/tram';
 import { Stop } from '../../models/transport-backend';
@@ -14,6 +14,7 @@ import { EfaSettingsComponent } from '../efa-settings/efa-settings';
   standalone: true,
   imports: [CommonModule, StopSearchComponent, StopCardComponent, ClockComponent, EfaSettingsComponent],
   templateUrl: './dashboard.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './dashboard.scss'
 })
 export class DashboardComponent implements OnInit {

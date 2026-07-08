@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TramService } from '../../services/tram';
@@ -10,6 +10,7 @@ import { Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './stop-search.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './stop-search.scss'
 })
 export class StopSearchComponent {

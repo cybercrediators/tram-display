@@ -13,17 +13,17 @@ body {
 }
 
 :root {
-  --bg-color: #bd4c54;
-  --text-color: #fffb46;
+  --bg-color: #95382C;
+  --text-color: #FBE66D;
   
   --board-bg: #111; /* flap background */
   --flap-bg: #222;
   --flap-text: #eee;
   --flap-border: #000;
   
-  --card-border: #263238;
-  --card-bg: #263238;
-  --card-header-text: #fffb46;
+  --card-border: #17252B;
+  --card-bg: #17252B;
+  --card-header-text: #FBE66D;
 }
 
 body.e-ink-mode {

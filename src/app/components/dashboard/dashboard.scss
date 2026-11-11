@@ -10,6 +10,8 @@
   align-items: center;
   margin-bottom: 20px;
   border-bottom: 4px solid var(--text-color, #000);
+  /* Room for the clock's outline ring, which paints outside its box. */
+  padding: 8px 0;
   height: auto; 
 
   h1 {
@@ -34,12 +36,6 @@
       align-items: center;
       height: 100%;
       overflow: visible;
-      
-      app-clock {
-        transform: scale(0.4);
-        margin: -50px 0;
-        transform-origin: center;
-      }
   }
 
   /* Responsive Adjustments */
@@ -57,10 +53,6 @@
     .clock-container {
        width: auto;
        margin: 10px 0;
-       
-       app-clock {
-         transform-origin: center;
-       }
     }
   }
 }
@@ -83,7 +75,7 @@ h1 {
 .empty-state {
   text-align: center;
   font-style: italic;
-  color: #111;
+  color: #78CFD0;
   font-family: monospace;
 }
 

@@ -1,12 +1,16 @@
+/* Swiss railway clock.
+   Sized in real CSS pixels (no `transform: scale()` on the component) so the
+   geometry lands on whole device pixels at devicePixelRatio 1: the dial content
+   box is 74px, so its centre sits on the 36/37 column boundary and every stroke
+   width/offset below is an integer. */
 .clock {
-  width: 200px; /* Increased size slightly */
-  height: 200px;
+  width: 80px;
+  height: 80px;
   background: white;
   border-radius: 50%;
-  border: 8px solid #ddd; /* Light gray frame typical of swiss clocks */
-  outline: 6px solid #111; /* Outer black ring */
+  border: 3px solid #ddd; /* Light gray frame typical of swiss clocks */
+  outline: 2px solid #111; /* Outer black ring */
   position: relative;
-  /* box-shadow: 0 4px 10px rgba(0,0,0,0.3); Removed per request to fix "grey ring" */
   box-sizing: border-box;
 }
 
@@ -17,27 +21,33 @@
 }
 
 .marks-container {
-  width: 100%;
-  height: 100%;
   position: absolute;
+  inset: 0;
 }
 
+/* Each mark spans the whole dial and rotates about its own centre, so the pivot
+   lives inside the element instead of ~92px outside of it. */
 .mark {
   position: absolute;
-  background: #333;
-  width: 2px; /* Minute marks are thin */
-  height: 8px; /* Minute marks are short */
-  left: 50%;
-  top: 0;
-  transform-origin: 50% 92px; /* Corrected center for border-box (100 - 8px border) */
-  margin-left: -1px; /* Center */
-  
-  &.hour-mark {
-    width: 8px;
-    height: 24px;
+  inset: 0;
+  transform-origin: 50% 50%;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px; /* Minute marks are thin */
+    height: 3px; /* Minute marks are short */
+    background: #333;
+  }
+
+  &.hour-mark::before {
+    width: 3px;
+    height: 10px;
+    margin-left: -1px; /* Center an odd width on the 36/37 pixel boundary */
     background: #000;
-    margin-left: -4px;
-    border-radius: 0; 
+    border-radius: 0;
   }
 }
 
@@ -45,52 +55,51 @@
   position: absolute;
   bottom: 50%;
   left: 50%;
-  transform-origin: bottom center;
+  transform-origin: 50% 100%; /* Pivot at the dial centre */
   z-index: 5;
 }
 
 .hour-hand {
-  width: 10px;
-  height: 30%;
+  width: 4px;
+  height: 22px;
+  margin-left: -2px;
   background: #000;
-  transform-origin: 50% 100%; /* Pivot at bottom */
-  margin-left: -5px; /* Center */
-  border-radius: 2px;
+  border-radius: 1px;
 }
 
 .minute-hand {
-  width: 6px;
-  height: 45%;
+  width: 2px;
+  height: 33px;
+  margin-left: -1px;
   background: #000;
-  transform-origin: 50% 100%;
-  margin-left: -3px;
-  border-radius: 2px;
+  border-radius: 1px;
 }
 
 .second-hand {
-  width: 3px;
-  height: 32%; /* Shortened to keep dot off ticks */
+  width: 1px;
+  height: 23px; /* Shortened to keep the dot off the ticks */
   background: #d40000; /* Swiss Red */
-  transform-origin: 50% 100%;
-  margin-left: -1.5px;
   z-index: 10;
-  
+
   .second-dot {
-    width: 16px;
-    height: 16px;
+    width: 6px;
+    height: 6px;
     background: #d40000;
     border-radius: 50%;
     position: absolute;
-    top: -10px; /* Moves dot to end of hand */
+    top: -3px; /* Moves dot to end of hand */
     left: 50%;
-    transform: translateX(-50%);
+    margin-left: -3px;
   }
 }
 
+/* Not currently rendered by clock.html. */
 .center-dot {
   position: absolute;
-  top: 50%; left: 50%;
-  width: 6px; height: 6px;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
   background: #d00;
   transform: translate(-50%, -50%);
   border-radius: 50%;
